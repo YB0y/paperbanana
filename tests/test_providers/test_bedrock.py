@@ -139,7 +139,7 @@ class TestMissingCredentials:
 class TestIsAvailable:
     def test_vlm_available_with_credentials(self):
         mock_session_cls, _, _ = _mock_boto3_session(has_credentials=True)
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.vlm.bedrock import BedrockVLM
 
             vlm = BedrockVLM()
@@ -147,7 +147,7 @@ class TestIsAvailable:
 
     def test_vlm_unavailable_without_credentials(self):
         mock_session_cls, _, _ = _mock_boto3_session(has_credentials=False)
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.vlm.bedrock import BedrockVLM
 
             vlm = BedrockVLM()
@@ -155,7 +155,7 @@ class TestIsAvailable:
 
     def test_imagen_available_with_credentials(self):
         mock_session_cls, _, _ = _mock_boto3_session(has_credentials=True)
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.image_gen.bedrock_imagen import BedrockImageGen
 
             gen = BedrockImageGen()
@@ -163,7 +163,7 @@ class TestIsAvailable:
 
     def test_imagen_unavailable_without_credentials(self):
         mock_session_cls, _, _ = _mock_boto3_session(has_credentials=False)
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.image_gen.bedrock_imagen import BedrockImageGen
 
             gen = BedrockImageGen()
@@ -201,7 +201,7 @@ class TestBedrockVLMGenerate:
             "usage": {"inputTokens": 10, "outputTokens": 5},
         }
 
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.vlm.bedrock import BedrockVLM
 
             vlm = BedrockVLM(model="us.amazon.nova-pro-v1:0")
@@ -219,7 +219,7 @@ class TestBedrockVLMGenerate:
             "output": {"message": {"content": [{"text": "OK"}]}},
         }
 
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.vlm.bedrock import BedrockVLM
 
             vlm = BedrockVLM()
@@ -235,7 +235,7 @@ class TestBedrockVLMGenerate:
         }
 
         img = _make_small_image()
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.vlm.bedrock import BedrockVLM
 
             vlm = BedrockVLM()
@@ -257,7 +257,7 @@ class TestBedrockVLMGenerate:
             "output": {"message": {"content": [{"text": "OK"}]}},
         }
 
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.vlm.bedrock import BedrockVLM
 
             vlm = BedrockVLM()
@@ -282,7 +282,7 @@ class TestBedrockImageGenGenerate:
         mock_body.read.return_value = json.dumps({"images": [b64_img]}).encode()
         mock_client.invoke_model.return_value = {"body": mock_body}
 
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.image_gen.bedrock_imagen import BedrockImageGen
 
             gen = BedrockImageGen(model="amazon.nova-canvas-v1:0")
@@ -303,7 +303,7 @@ class TestBedrockImageGenGenerate:
         mock_body.read.return_value = json.dumps({"images": [b64_img]}).encode()
         mock_client.invoke_model.return_value = {"body": mock_body}
 
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.image_gen.bedrock_imagen import BedrockImageGen
 
             gen = BedrockImageGen()
@@ -321,7 +321,7 @@ class TestBedrockImageGenGenerate:
         mock_body.read.return_value = json.dumps({"images": [b64_img]}).encode()
         mock_client.invoke_model.return_value = {"body": mock_body}
 
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.image_gen.bedrock_imagen import BedrockImageGen
 
             gen = BedrockImageGen()
@@ -340,7 +340,7 @@ class TestBedrockImageGenGenerate:
         mock_body.read.return_value = json.dumps({"images": [b64_img]}).encode()
         mock_client.invoke_model.return_value = {"body": mock_body}
 
-        with patch("boto3.Session", mock_session_cls):
+        with patch.dict("sys.modules", {"boto3": MagicMock(Session=mock_session_cls)}):
             from paperbanana.providers.image_gen.bedrock_imagen import BedrockImageGen
 
             gen = BedrockImageGen()

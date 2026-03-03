@@ -87,12 +87,14 @@ class BedrockVLM(VLMProvider):
             for img in images:
                 buf = BytesIO()
                 img.save(buf, format="PNG")
-                content.append({
-                    "image": {
-                        "format": "png",
-                        "source": {"bytes": buf.getvalue()},
+                content.append(
+                    {
+                        "image": {
+                            "format": "png",
+                            "source": {"bytes": buf.getvalue()},
+                        }
                     }
-                })
+                )
         content.append({"text": prompt})
 
         kwargs: dict = {

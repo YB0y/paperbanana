@@ -113,8 +113,7 @@ class ProviderRegistry:
             )
         else:
             raise ValueError(
-                f"Unknown VLM provider: {provider}. "
-                f"Available: gemini, openrouter, openai, bedrock"
+                f"Unknown VLM provider: {provider}. Available: gemini, openrouter, openai, bedrock"
             )
 
     @staticmethod
