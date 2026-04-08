@@ -6,6 +6,7 @@ from paperbanana.agents.optimizer import InputOptimizerAgent
 from paperbanana.agents.planner import PlannerAgent
 from paperbanana.agents.retriever import RetrieverAgent
 from paperbanana.agents.stylist import StylistAgent
+from paperbanana.agents.tikz_exporter import TikZExporterAgent
 from paperbanana.agents.visualizer import VisualizerAgent
 
 __all__ = [
@@ -16,4 +17,5 @@ __all__ = [
     "StylistAgent",
     "VisualizerAgent",
     "CriticAgent",
+    "TikZExporterAgent",
 ]
