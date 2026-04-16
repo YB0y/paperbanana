@@ -521,7 +521,17 @@ class PaperBananaPipeline:
         )
         self._emit_progress("phase1_retrieval_started")
         retrieval_start = time.perf_counter()
-        candidates = self.reference_store.get_all()
+        if self.settings.reference_category:
+            candidates = self.reference_store.get_by_categories(
+                self.settings.reference_category
+            )
+            logger.info(
+                "Filtered candidates by category",
+                categories=self.settings.reference_category,
+                count=len(candidates),
+            )
+        else:
+            candidates = self.reference_store.get_all()
         (
             candidates,
             retrieval_mode,

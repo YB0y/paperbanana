@@ -11,6 +11,7 @@ from paperbanana.studio import runs as runs_mod
 from paperbanana.studio.runner import (
     ASPECT_RATIO_CHOICES,
     IMAGE_PROVIDER_CHOICES,
+    REFERENCE_CATEGORY_CHOICES,
     VLM_PROVIDER_CHOICES,
     build_settings,
     merge_context,
@@ -220,6 +221,13 @@ def build_studio_app(
                     choices=ASPECT_RATIO_CHOICES,
                     value="default",
                 )
+                ref_cat = gr.Dropdown(
+                    label="Reference category filter",
+                    choices=REFERENCE_CATEGORY_CHOICES,
+                    value="",
+                    multiselect=True,
+                    info="Constrain retrieval to specific domains (empty = all)",
+                )
                 d_log = gr.Textbox(label="Progress log", lines=18)
                 d_img = gr.Image(label="Final diagram", type="filepath")
                 d_gal = gr.Gallery(
@@ -248,10 +256,14 @@ def build_studio_app(
                     file,
                     caption,
                     aspect,
+                    ref_cats,
                 ):
                     _dotenv()
                     try:
+                        cats = [x for x in (ref_cats or []) if x]
                         st = _settings(od, c, vp, vm, ip, im, fo, it, au, mx, op, sp, sd)
+                        if cats:
+                            st.reference_category = cats
                         ctx = merge_context(text, _upload_path(file))
                         if not ctx.strip():
                             return "Context is empty.", None, []
@@ -286,6 +298,7 @@ def build_studio_app(
                         ctx_file,
                         cap,
                         ar,
+                        ref_cat,
                     ],
                     outputs=[d_log, d_img, d_gal],
                 )
